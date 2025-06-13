@@ -5,10 +5,14 @@ from app.model import predict_price
 
 app = FastAPI(title="Real Estate Price Predictor API")
 
-# ✅ CORS middleware setup
+# ✅ CORS middleware setup for both local dev and Vercel frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "https://real-estate-price-predictor-fronten.vercel.app/"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
