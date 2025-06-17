@@ -128,6 +128,9 @@ cd frontend
 npm install
 npm run dev
 
+```
+---
+
 ## 🔗 Project Links
 
 - 🖥️ **Frontend Repository**: [RealEstatePricePredictorFrontend (GitHub)](https://github.com/imrishu18/RealEstatePricePredictorFrontend)
@@ -141,7 +144,6 @@ npm run dev
 **Rishu Raj**  
 🔗 [GitHub](https://github.com/imrishu18)  
 💼 [LinkedIn](https://www.linkedin.com/in/your-link) *(Coming soon...)*
-
 
 ---
 
