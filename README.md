@@ -14,67 +14,82 @@ A modern, responsive, and intelligent web application that allows users to predi
 ## 🌟 Features
 
 - 📊 Real-time property price predictions
-- ✨ Stunning UI with animated backgrounds
-- 📍 Location-specific predictions with premium adjustments
-- 🧠 Machine Learning powered (XGBoost)
-- 🖥️ Fully responsive and mobile-friendly
-- 🔒 Input validation and error handling
+- 📐 Location-sensitive pricing with smart feature engineering
+- 🧠 ML-powered (XGBoost + SHAP for explainability)
+- ✨ Beautiful UI, responsive layout, animated visuals
+- 💳 EMI estimator & price breakdown
+- ✅ Validations & fallback handling
+- 🔧 Backend-frontend integration with REST API
 
 ---
 
 ## 🖼️ Pages Overview
 
-### 1️⃣ Landing Page (Home)
-
-- Gradient text heading: `Real Estate Price Predictor`
-- Emojis for property type hints
+### 1️⃣ Home Page
+- Gradient text with “Real Estate Price Predictor”
+- ⚡ Animated particle background
 - CTA: “🚀 Get Started”
-- Animated background using `particles.js` canvas effect
-- Built with icons: Python, FastAPI, ML Model, Next.js, Tailwind CSS
+- Icons showing tech used
 
 ### 2️⃣ Predict Page
-
 - Input fields:
   - Total Sqft
-  - Price per Sqft
   - Bathrooms (select dropdown)
   - Balconies (select dropdown)
-  - Location (input with datalist from 50+ popular Bengaluru areas)
-- Smart validation: user must select valid location
-- Background animation with floating particles
+  - BHK
+  - Location (searchable list of 60+ Bengaluru areas)
+- 🔎 Smart location filtering & validation
+- 🎨 Floating particle animation
 
-### 3️⃣ Result Page
-
-- Displays Predicted Price 💰
-- 💹 Price Breakdown:
-  - Base Cost
-  - Amenities Cost
-  - Location Premium
-- 💳 Estimated EMI calculator based on prediction
-- Button to re-predict or go back
+### 3️⃣ Results Page
+- ✅ Predicted Price (in Lakhs)
+- 📏 Price Per Sqft
+- 📊 Price Breakdown: Base, Amenities, Location Premium
+- 💳 EMI Calculator (customizable loan term + interest)
+- 🔁 Predict Again button
 
 ---
 
-## 🧠 ML Model
+## 🧠 Machine Learning Model
 
-- Dataset: [Bengaluru House Price Data](https://www.kaggle.com/datasets/amitabhajoy/bengaluru-house-price-data)
-- Libraries used:
-  - `pandas`, `numpy`, `scikit-learn`, `xgboost`
-- Preprocessing:
-  - Categorical encoding, outlier removal, null handling
-- Model:
-  - Trained using XGBoost Regressor
-  - Stored via `joblib` and served via FastAPI
+- **Dataset**: [Bengaluru House Price Data (Kaggle)](https://www.kaggle.com/datasets/amitabhajoy/bengaluru-house-price-data)
+- **Preprocessing**:
+  - Handled mixed `total_sqft` formats and units
+  - Removed outliers using IQR and domain rules
+  - Encoded categorical location field
+  - Applied `log1p(price)` to reduce skew
+  - Scaled features using `StandardScaler`
+- **Model**: `XGBoostRegressor`
+  - Hyperparameter-tuned using `RandomizedSearchCV`
+  - Trained with 5-fold CV
+
+### ✅ Final Model Metrics
+
+| Metric     | Value (Test Set) |
+|------------|------------------|
+| MAE        | `16.77 Lakhs`    |
+| RMSE       | `47.45 Lakhs`    |
+| R² Score   | `0.627`          |
+
+> Predictions are de-log transformed using `expm1()` to obtain real-world values.
 
 ---
 
 ## 🔧 Tech Stack
 
-| Frontend | Backend | Machine Learning |
-|----------|---------|------------------|
-| Next.js  | FastAPI | XGBoost, Pandas  |
-| Tailwind CSS | Uvicorn | Scikit-learn |
-| Framer Motion | REST API | joblib     |
+| Layer      | Tools Used                                 |
+|------------|---------------------------------------------|
+| Frontend   | Next.js, Tailwind CSS, Framer Motion        |
+| Backend    | FastAPI, Uvicorn                            |
+| ML Model   | XGBoost, Scikit-learn, SHAP, joblib         |
+| Deployment | Vercel (frontend), Render (backend)         |
+
+---
+
+## 📈 Explainability
+
+- ✅ SHAP plots (summary & force) are generated separately for analysis  
+- Stored in: `app/artifacts/shap_summary.png`, `shap_force_plot.html`
 
 ---
 
@@ -100,24 +115,6 @@ A modern, responsive, and intelligent web application that allows users to predi
 
 ---
 
-## 📊 Model Performance
-
-The model predicts the **log-transformed house prices** to ensure stability and reduce the impact of outliers. The following models were evaluated:
-
-| Model                 | Metric                          | Value     |
-|----------------------|----------------------------------|-----------|
-| **Linear Regression** | RMSE (Validation Set)            | `0.5276`  |
-| **XGBoost Regressor** | Cross-Validated RMSE (CV=5)      | `0.0514`  |
-
-> ✅ **RMSE (Root Mean Squared Error)** is used as the evaluation metric. A lower RMSE indicates better performance in predicting house prices (log scale).
-
-### 📌 Notes
-- The `price` variable was log-transformed using `log1p(price)` for model training to improve prediction stability.
-- **XGBoost Regressor** outperformed the baseline **Linear Regression**, showing its ability to capture non-linear patterns in real estate data.
-- The performance metric (RMSE) is calculated on the **log-scale**. You can apply `expm1()` to convert predictions back to actual price values.
-- Cross-validation (CV=5) was used to ensure robust evaluation of the XGBoost model.
-
-
 ## 🛠️ Run Locally
 
 ```bash
@@ -131,13 +128,11 @@ cd frontend
 npm install
 npm run dev
 
----
-
 ## 🔗 Project Links
 
 - 🖥️ **Frontend Repository**: [RealEstatePricePredictorFrontend (GitHub)](https://github.com/imrishu18/RealEstatePricePredictorFrontend)
 - 🛠️ **Backend Repository**: [RealEstatePricePredictorBackend (GitHub)](https://github.com/imrishu18/RealEstatePricePredictorBackend)
-- 📓 **Google Colab Notebook**: [Run the Model on Google Colab](https://colab.research.google.com/drive/1Zhdsix8XywGV4iEeTodskOFno7SQsYLc?usp=sharing)
+- 📓 **Google Colab Notebook**: [Run the Model on Google Colab](https://colab.research.google.com/drive/1_vV1FyKQ_lqpPKhKBZtVUTR_dDterorm?usp=sharing)
 
 ---
 
@@ -145,7 +140,8 @@ npm run dev
 
 **Rishu Raj**  
 🔗 [GitHub](https://github.com/imrishu18)  
-💼 [LinkedIn][Coming soon...](https://www.linkedin.com/in/your-link)
+💼 [LinkedIn](https://www.linkedin.com/in/your-link) *(Coming soon...)*
+
 
 ---
 
